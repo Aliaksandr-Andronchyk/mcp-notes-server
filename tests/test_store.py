@@ -22,6 +22,17 @@ def test_title_is_required(store):
         store.add("   ")
 
 
+def test_non_string_title_is_rejected(store):
+    with pytest.raises(BadInput):
+        store.add(123)
+
+
+def test_non_string_body_is_rejected(store):
+    note = store.add("title")
+    with pytest.raises(BadInput):
+        store.update(note.id, body=123)
+
+
 def test_bad_tag_is_rejected(store):
     with pytest.raises(BadInput):
         store.add("note", tags=["two words"])
