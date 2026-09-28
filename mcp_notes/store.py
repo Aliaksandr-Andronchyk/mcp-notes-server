@@ -133,6 +133,10 @@ class Store:
     # writes
 
     def add(self, title: str, body: str = "", tags=None) -> Note:
+        if title is not None and not isinstance(title, str):
+            raise BadInput("title must be a string")
+        if body is not None and not isinstance(body, str):
+            raise BadInput("body must be a string")
         title = (title or "").strip()
         if not title:
             raise BadInput("title is required")
@@ -148,6 +152,10 @@ class Store:
         return self.get(note_id)
 
     def update(self, note_id: int, title=None, body=None, tags=None) -> Note:
+        if title is not None and not isinstance(title, str):
+            raise BadInput("title must be a string")
+        if body is not None and not isinstance(body, str):
+            raise BadInput("body must be a string")
         current = self.get(note_id)
         new_title = current.title if title is None else (title or "").strip()
         if not new_title:
