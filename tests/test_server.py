@@ -106,6 +106,12 @@ def test_bad_arguments_come_back_as_is_error(server):
     assert call(server, "add_note", title="x", tags=["two words"])["isError"] is True
 
 
+def test_non_string_title_or_body_is_a_clean_error_not_a_crash(server):
+    assert call(server, "add_note", title=123)["isError"] is True
+    note_id = payload(call(server, "add_note", title="ok"))["note"]["id"]
+    assert call(server, "update_note", id=note_id, body=123)["isError"] is True
+
+
 def test_unknown_tool_is_a_protocol_error(server):
     # The spec separates the two: a name that does not exist is invalid params,
     # while a tool that ran and failed comes back as a result with isError.
