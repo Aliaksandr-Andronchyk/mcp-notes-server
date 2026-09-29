@@ -122,6 +122,16 @@ def test_update_cannot_empty_the_title(store):
         store.update(note.id, title="  ")
 
 
+def test_update_with_bad_tag_does_not_change_title_or_tags(store):
+    note = store.add("original title", "body", ["keep"])
+    with pytest.raises(BadInput):
+        store.update(note.id, title="changed title", tags=["bad tag!"])
+
+    unchanged = store.get(note.id)
+    assert unchanged.title == "original title"
+    assert unchanged.tags == ["keep"]
+
+
 def test_delete_removes_note_tags_and_index(store):
     note = store.add("throwaway", "body", ["temp"])
     store.delete(note.id)
