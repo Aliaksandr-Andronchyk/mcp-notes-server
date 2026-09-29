@@ -167,7 +167,12 @@ class Store:
         )
         if tags is not None:
             self.db.execute("DELETE FROM tags WHERE note_id = ?", (note_id,))
-            self._set_tags(note_id, normalize_tags(tags))
+            try:
+                normalized_tags = normalize_tags(tags)
+            except BadInput:
+                self.db.rollback()
+                raise
+            self._set_tags(note_id, normalized_tags)
         self.db.commit()
         return self.get(note_id)
 
