@@ -91,7 +91,7 @@ pip install pytest
 python3 -m pytest tests -q
 ```
 
-31 tests covering storage, search behaviour, the JSON-RPC layer and a full stdio session.
+37 tests covering storage, search behaviour, the JSON-RPC layer and a full stdio session.
 
 ## Licence
 
