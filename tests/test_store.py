@@ -43,6 +43,18 @@ def test_tags_normalize_and_dedupe():
     assert normalize_tags("ops, release") == ["ops", "release"]
 
 
+def test_tags_string_splits_on_any_whitespace():
+    assert normalize_tags("ops\trelease") == ["ops", "release"]
+
+
+@pytest.mark.parametrize("tag", ["...", "-leading-dash"])
+def test_tag_must_start_with_a_word_character(store, tag):
+    with pytest.raises(BadInput):
+        normalize_tags([tag])
+    with pytest.raises(BadInput):
+        store.add("note", tags=[tag])
+
+
 def test_search_finds_by_prefix(store):
     store.add("Deploy checklist", "run migrations first", ["ops"])
     store.add("Grocery list", "milk and bread")
